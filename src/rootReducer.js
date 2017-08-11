@@ -27,7 +27,8 @@ function life(state = {}, action) {
           initialBoardWidth,
           initialBoardHeight,
           initialLiveCells
-        )
+        ),
+        isConcluded: false
       });
     case actionTypes.STEP:
       return Object.assign({}, state, stepNextState(state));
