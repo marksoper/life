@@ -21,6 +21,9 @@ class LifeContainer extends Component {
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
     this.handleWidthChange = this.handleWidthChange.bind(this);
+    this.handleToggleCellStartValue = this.handleToggleCellStartValue.bind(
+      this
+    );
     const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
     this.state = {
       boardWidth: this.props.boardWidth,
@@ -32,23 +35,30 @@ class LifeContainer extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.state.toggleCellStartValuePending) {
+      const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
+      this.setState({
+        minBoardWidth: minimumDimensions[0],
+        minBoardHeight: minimumDimensions[1],
+        toggleCellStartValuePending: false
+      });
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (!prevProps.isPlaying && this.props.isPlaying) {
       this.runSteps();
     }
-    if (this.state.toggleCellStartValuePending) {
-      const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
-      this.setState = {
-        minBoardWidth: minimumDimensions[0],
-        minBoardHeight: minimumDimensions[1],
-        toggleCellStartValuePending: false
-      };
-    }
+  }
+
+  hasStarted() {
+    return this.props.generation > 0;
   }
 
   runSteps() {
-    this.props.step();
     if (this.props.isPlaying && !this.props.isConcluded) {
+      this.props.step();
       setTimeout(this.runSteps.bind(this), tickDelay);
     }
   }
@@ -90,13 +100,13 @@ class LifeContainer extends Component {
     }
   }
 
-  handleToggleCellStartValue(e) {
-    const r = e.target.rValue;
-    const c = e.target.cValue;
-    this.setState({
-      toggleCellStartValuePending: true
-    });
-    this.props.toggleCellStartValue(r, c);
+  handleToggleCellStartValue(r, c) {
+    if (!this.hasStarted()) {
+      this.setState({
+        toggleCellStartValuePending: true
+      });
+      this.props.toggleCellStartValue(r, c);
+    }
   }
 
   render() {

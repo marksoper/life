@@ -13,6 +13,7 @@ class LifeBoard extends Component {
   }
 
   render() {
+    const handleCellClick = this.handleCellClick;
     const board = this.props.board || [[]];
     const w = board[0].length;
     const h = board.length;
@@ -28,6 +29,8 @@ class LifeBoard extends Component {
         cells.push({
           x: c * (pixelsPerCell + colLineStrokeWidth),
           y: r * (pixelsPerCell + rowLineStrokeWidth),
+          r,
+          c,
           fill: board[r][c] ? '#0FC' : '#EEE',
           key: `${r}_${c}`
         });
@@ -41,6 +44,7 @@ class LifeBoard extends Component {
         width={pixelsPerCell}
         height={pixelsPerCell}
         fill={cell.fill}
+        onClick={() => handleCellClick(cell.r, cell.c)}
       />
     );
     return (
