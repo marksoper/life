@@ -46,24 +46,29 @@ class LifeContainer extends Component {
 
   render() {
     const board = this.props.board;
+    const generation = this.props.generation;
     const handleStep = this.handleStep;
     const handleResetBoard = this.handleResetBoard;
     const handlePlay = this.handlePlay;
     const concludedMessage = this.props.isConcluded ? 'concluded' : '';
     return (
       <div className="LifeContainer">
-        <a onClick={handleStep} role="button" tabIndex="0">
-          step
-        </a>
+        <span>{generation}</span>
         &nbsp;
         <a onClick={handlePlay} role="button" tabIndex="0">
           <span className="glyphicon glyphicon-play" aria-label="Play" />
           play
         </a>
+        &nbsp;
+        <a onClick={handleStep} role="button" tabIndex="0">
+          step
+        </a>
+        &nbsp;
         <a onClick={handleResetBoard} role="button" tabIndex="0">
           reset
         </a>
-        <div>{concludedMessage}</div>
+        &nbsp;
+        <span>{concludedMessage}</span>
         <div>
           <LifeBoard
             board={board}
@@ -77,6 +82,7 @@ class LifeContainer extends Component {
 
 const mapStateToProps = state => ({
   board: state.life.board,
+  generation: state.life.generation,
   isConcluded: state.life.isConcluded,
   isPlaying: state.life.isPlaying
 });
@@ -87,19 +93,14 @@ const mapDispatchToProps = dispatch => ({
   resetBoard: () => dispatch(resetBoard())
 });
 
-LifeContainer.defaultProps = {
-  board: null,
-  isConcluded: false,
-  isPlaying: false
-};
-
 LifeContainer.propTypes = {
+  generation: PropTypes.number.isRequired,
   play: PropTypes.func.isRequired,
   step: PropTypes.func.isRequired,
   resetBoard: PropTypes.func.isRequired,
-  board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-  isConcluded: PropTypes.bool,
-  isPlaying: PropTypes.bool
+  board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  isConcluded: PropTypes.bool.isRequired,
+  isPlaying: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LifeContainer);

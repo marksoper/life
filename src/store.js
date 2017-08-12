@@ -15,7 +15,10 @@ const initialBoard = createNewBoard(
 
 const initialState = {
   life: {
-    board: initialBoard
+    board: initialBoard,
+    generation: 0,
+    isPlaying: false,
+    isConcluded: false
   }
 };
 

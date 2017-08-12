@@ -8,12 +8,18 @@ import {
 } from './settings';
 
 function stepNextState(state) {
+  if (state.isConcluded) {
+    return state;
+  }
   const nextBoard = step(state.board);
+  const nextGeneration = state.generation + 1;
   const nextState = nextBoard
     ? {
-        board: nextBoard
+        board: nextBoard,
+        generation: nextGeneration
       }
     : {
+        generation: nextGeneration,
         isConcluded: true,
         isPlaying: false
       };
@@ -29,6 +35,8 @@ function life(state = {}, action) {
           initialBoardHeight,
           initialLiveCells
         ),
+        generation: 0,
+        isPlaying: false,
         isConcluded: false
       });
     case actionTypes.PLAY:
