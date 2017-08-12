@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { createNewBoard, step, cloneBoard } from './life/life';
+import { createNewBoard, step, cloneBoard, resizeBoard } from './life/life';
 import { actionTypes } from './actions';
 import { initialLiveCells } from './settings';
 
@@ -47,6 +47,10 @@ function life(state = {}, action) {
         generation: 0,
         isPlaying: false,
         isConcluded: false
+      });
+    case actionTypes.RESIZE_BOARD:
+      return Object.assign({}, state, {
+        board: resizeBoard(state.board, action.width, action.height)
       });
     case actionTypes.PLAY:
       return Object.assign({}, state, {

@@ -5,6 +5,7 @@ import LifeBoard from '../LifeBoard/LifeBoard';
 import './LifeContainer.css';
 import {
   resetBoard,
+  resizeBoard,
   play,
   pause,
   step,
@@ -97,7 +98,7 @@ class LifeContainer extends Component {
       nextBoardWidth <= this.state.maxBoardWidth
     ) {
       this.setState({ boardWidth: nextBoardWidth });
-      this.props.resetBoard(nextBoardWidth, this.props.boardHeight);
+      this.props.resizeBoard(nextBoardWidth, this.props.boardHeight);
     } else if (nextBoardWidth < this.state.minBoardWidth) {
       this.setState({ boardWidth: this.state.minBoardWidth });
     } else {
@@ -181,7 +182,8 @@ const mapDispatchToProps = dispatch => ({
   play: () => dispatch(play()),
   pause: () => dispatch(pause()),
   step: () => dispatch(step()),
-  resetBoard: (w, h) => dispatch(resetBoard(w, h)),
+  resetBoard: () => dispatch(resetBoard()),
+  resizeBoard: (w, h) => dispatch(resizeBoard(w, h)),
   toggleCellStartValue: (r, c) => dispatch(toggleCellStartValue(r, c))
 });
 

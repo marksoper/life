@@ -32,6 +32,24 @@ export function cloneBoard(board) {
   return newBoard;
 }
 
+export function resizeBoard(board, w, h) {
+  const newBoard = [];
+  for (let r = 0; r < board.length; r += 1) {
+    for (let c = 0; c < board[0].length; c += 1) {
+      const cellVal = board[r][c];
+      if (c >= w || r >= h) {
+        if (cellVal) {
+          return board;
+        }
+      } else {
+        newBoard[r] = newBoard[r] || [];
+        newBoard[r][c] = board[r][c];
+      }
+    }
+  }
+  return newBoard;
+}
+
 export function getMinimumAllowableDimensions(board) {
   let rMax = 0;
   let cMax = 0;
