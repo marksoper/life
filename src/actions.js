@@ -1,11 +1,13 @@
 const RESET_BOARD = 'RESET_BOARD';
 const PLAY = 'PLAY';
+const PAUSE = 'PAUSE';
 const STEP = 'STEP';
 const TOGGLE_CELL_START_VALUE = 'TOGGLE_CELL_START_VALUE';
 
 export const actionTypes = {
   RESET_BOARD,
   PLAY,
+  PAUSE,
   STEP,
   TOGGLE_CELL_START_VALUE
 };
@@ -21,6 +23,12 @@ export function resetBoard(width, height) {
 export function play() {
   return {
     type: PLAY
+  };
+}
+
+export function pause() {
+  return {
+    type: PAUSE
   };
 }
 

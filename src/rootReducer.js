@@ -43,6 +43,10 @@ function life(state = {}, action) {
       return Object.assign({}, state, {
         isPlaying: true
       });
+    case actionTypes.PAUSE:
+      return Object.assign({}, state, {
+        isPlaying: false
+      });
     case actionTypes.STEP:
       return Object.assign({}, state, stepNextState(state));
     case actionTypes.TOGGLE_CELL_START_VALUE:

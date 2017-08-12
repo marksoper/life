@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LifeBoard from '../LifeBoard/LifeBoard';
 import './LifeContainer.css';
-import { resetBoard, play, step, toggleCellStartValue } from '../../actions';
+import { resetBoard, play, pause, step, toggleCellStartValue } from '../../actions';
 import { tickDelay } from '../../settings';
 
 class LifeContainer extends Component {
@@ -12,6 +12,7 @@ class LifeContainer extends Component {
     this.handleStep = this.handleStep.bind(this);
     this.handleResetBoard = this.handleResetBoard.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
+    this.handlePause = this.handlePause.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -34,14 +35,19 @@ class LifeContainer extends Component {
     }
   }
 
-  handleResetBoard(e) {
+  handlePause(e) {
     e.preventDefault();
-    this.props.resetBoard();
+    this.props.pause();
   }
 
   handleStep(e) {
     e.preventDefault();
     this.props.step();
+  }
+
+  handleResetBoard(e) {
+    e.preventDefault();
+    this.props.resetBoard();
   }
 
   render() {
@@ -50,6 +56,7 @@ class LifeContainer extends Component {
     const handleStep = this.handleStep;
     const handleResetBoard = this.handleResetBoard;
     const handlePlay = this.handlePlay;
+    const handlePause = this.handlePause;
     const concludedMessage = this.props.isConcluded ? 'concluded' : '';
     return (
       <div className="LifeContainer">
@@ -58,6 +65,11 @@ class LifeContainer extends Component {
         <a onClick={handlePlay} role="button" tabIndex="0">
           <span className="glyphicon glyphicon-play" aria-label="Play" />
           play
+        </a>
+        &nbsp;
+        <a onClick={handlePause} role="button" tabIndex="0">
+          <span className="glyphicon glyphicon-pause" aria-label="Play" />
+          pause
         </a>
         &nbsp;
         <a onClick={handleStep} role="button" tabIndex="0">
@@ -89,6 +101,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   play: () => dispatch(play()),
+  pause: () => dispatch(pause()),
   step: () => dispatch(step()),
   resetBoard: () => dispatch(resetBoard())
 });
@@ -96,6 +109,7 @@ const mapDispatchToProps = dispatch => ({
 LifeContainer.propTypes = {
   generation: PropTypes.number.isRequired,
   play: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
   step: PropTypes.func.isRequired,
   resetBoard: PropTypes.func.isRequired,
   board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,

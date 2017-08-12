@@ -1,8 +1,8 @@
-import { caret } from './examplePatterns';
+import { foo } from './examplePatterns';
 
 export const initialBoardWidth = 40;
 export const initialBoardHeight = 30;
-export const initialLiveCells = caret;
+export const initialLiveCells = foo;
 
 export const tickDelay = 250;
 
