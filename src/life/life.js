@@ -21,6 +21,17 @@ export function createNewBoard(w, h, liveCells) {
   return newBoard;
 }
 
+export function cloneBoard(board) {
+  const newBoard = [];
+  for (let r = 0; r < board.length; r += 1) {
+    newBoard[r] = [];
+    for (let c = 0; c < board[0].length; c += 1) {
+      newBoard[r][c] = board[r][c];
+    }
+  }
+  return newBoard;
+}
+
 export function getMinimumAllowableDimensions(board) {
   let rMax = 0;
   let cMax = 0;

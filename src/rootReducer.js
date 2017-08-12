@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { createNewBoard, step } from './life/life';
+import { createNewBoard, step, cloneBoard } from './life/life';
 import { actionTypes } from './actions';
 import { initialLiveCells } from './settings';
 
@@ -19,6 +19,9 @@ function stepNextState(state) {
         isConcluded: true,
         isPlaying: false
       };
+  if (state.generation === 0) {
+    nextState.initialBoard = cloneBoard(state.board);
+  }
   return nextState;
 }
 
@@ -34,7 +37,9 @@ function life(state = {}, action) {
   switch (action.type) {
     case actionTypes.RESET_BOARD:
       return Object.assign({}, state, {
-        board: createNewBoard(action.width, action.height, initialLiveCells),
+        board:
+          state.initialBoard ||
+          createNewBoard(action.width, action.height, initialLiveCells),
         generation: 0,
         isPlaying: false,
         isConcluded: false
