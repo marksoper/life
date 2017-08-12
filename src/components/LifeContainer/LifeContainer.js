@@ -84,7 +84,7 @@ class LifeContainer extends Component {
 
   handleResetBoard(e) {
     e.preventDefault();
-    this.props.resetBoard(this.state.boardWidth, this.state.boardHeight);
+    this.props.resetBoard();
   }
 
   handleWidthChange(e) {

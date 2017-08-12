@@ -39,7 +39,11 @@ function life(state = {}, action) {
       return Object.assign({}, state, {
         board:
           state.initialBoard ||
-          createNewBoard(action.width, action.height, initialLiveCells),
+          createNewBoard(
+            state.board[0].length,
+            state.board.length,
+            initialLiveCells
+          ),
         generation: 0,
         isPlaying: false,
         isConcluded: false
