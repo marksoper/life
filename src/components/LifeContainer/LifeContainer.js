@@ -77,7 +77,9 @@ class LifeContainer extends Component {
 
   handleStep(e) {
     e.preventDefault();
-    this.props.step();
+    if (!this.props.isPlaying) {
+      this.props.step();
+    }
   }
 
   handleResetBoard(e) {

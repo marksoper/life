@@ -22,10 +22,12 @@ function stepNextState(state) {
   return nextState;
 }
 
-function toggleCellStartValue(board, r, c) {
-  const updatedBoard = board;
+function toggleCellStartValueNextState(state, r, c) {
+  const updatedBoard = state.board;
   updatedBoard[r][c] = updatedBoard[r][c] ? 0 : 1;
-  return updatedBoard;
+  return {
+    board: updatedBoard
+  };
 }
 
 function life(state = {}, action) {
@@ -48,9 +50,11 @@ function life(state = {}, action) {
     case actionTypes.STEP:
       return Object.assign({}, state, stepNextState(state));
     case actionTypes.TOGGLE_CELL_START_VALUE:
-      return Object.assign({}, state, {
-        board: toggleCellStartValue(state.board, action.r, action.c)
-      });
+      return Object.assign(
+        {},
+        state,
+        toggleCellStartValueNextState(state, action.r, action.c)
+      );
     default:
       return state;
   }
