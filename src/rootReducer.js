@@ -14,7 +14,8 @@ function stepNextState(state) {
         board: nextBoard
       }
     : {
-        isConcluded: true
+        isConcluded: true,
+        isPlaying: false
       };
   return nextState;
 }
@@ -30,8 +31,14 @@ function life(state = {}, action) {
         ),
         isConcluded: false
       });
+    case actionTypes.PLAY:
+      return Object.assign({}, state, {
+        isPlaying: true
+      });
     case actionTypes.STEP:
       return Object.assign({}, state, stepNextState(state));
+    case actionTypes.TOGGLE_CELL_START_VALUE:
+      return state;
     default:
       return state;
   }
