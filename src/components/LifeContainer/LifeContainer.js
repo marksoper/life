@@ -86,6 +86,9 @@ class LifeContainer extends Component {
   }
 
   handleWidthChange(e) {
+    if (this.hasStarted()) {
+      return;
+    }
     const nextBoardWidth = Number(e.target.value);
     if (
       nextBoardWidth >= this.state.minBoardWidth &&
