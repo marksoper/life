@@ -1,11 +1,7 @@
 import { combineReducers } from 'redux';
 import { createNewBoard, step } from './life/life';
 import { actionTypes } from './actions';
-import {
-  initialBoardWidth,
-  initialBoardHeight,
-  initialLiveCells
-} from './settings';
+import { initialLiveCells } from './settings';
 
 function stepNextState(state) {
   if (state.isConcluded) {
@@ -30,11 +26,7 @@ function life(state = {}, action) {
   switch (action.type) {
     case actionTypes.RESET_BOARD:
       return Object.assign({}, state, {
-        board: createNewBoard(
-          initialBoardWidth,
-          initialBoardHeight,
-          initialLiveCells
-        ),
+        board: createNewBoard(action.width, action.height, initialLiveCells),
         generation: 0,
         isPlaying: false,
         isConcluded: false

@@ -3,8 +3,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LifeBoard from '../LifeBoard/LifeBoard';
 import './LifeContainer.css';
-import { resetBoard, play, pause, step, toggleCellStartValue } from '../../actions';
-import { tickDelay } from '../../settings';
+import {
+  resetBoard,
+  play,
+  pause,
+  step,
+  toggleCellStartValue
+} from '../../actions';
+import { tickDelay, maxBoardWidth, maxBoardHeight } from '../../settings';
+import { getMinimumAllowableDimensions } from '../../life/life';
 
 class LifeContainer extends Component {
   constructor(props) {
@@ -13,11 +20,29 @@ class LifeContainer extends Component {
     this.handleResetBoard = this.handleResetBoard.bind(this);
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
+    this.handleWidthChange = this.handleWidthChange.bind(this);
+    const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
+    this.state = {
+      boardWidth: this.props.boardWidth,
+      boardHeight: this.props.boardHeight,
+      minBoardWidth: minimumDimensions[0],
+      maxBoardWidth,
+      minBoardHeight: minimumDimensions[1],
+      maxBoardHeight
+    };
   }
 
   componentDidUpdate(prevProps) {
     if (!prevProps.isPlaying && this.props.isPlaying) {
       this.runSteps();
+    }
+    if (this.state.toggleCellStartValuePending) {
+      const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
+      this.setState = {
+        minBoardWidth: minimumDimensions[0],
+        minBoardHeight: minimumDimensions[1],
+        toggleCellStartValuePending: false
+      };
     }
   }
 
@@ -47,16 +72,42 @@ class LifeContainer extends Component {
 
   handleResetBoard(e) {
     e.preventDefault();
-    this.props.resetBoard();
+    this.props.resetBoard(this.state.boardWidth, this.state.boardHeight);
+  }
+
+  handleWidthChange(e) {
+    const nextBoardWidth = Number(e.target.value);
+    if (
+      nextBoardWidth >= this.state.minBoardWidth &&
+      nextBoardWidth <= this.state.maxBoardWidth
+    ) {
+      this.setState({ boardWidth: nextBoardWidth });
+      this.props.resetBoard(nextBoardWidth, this.props.boardHeight);
+    } else if (nextBoardWidth < this.state.minBoardWidth) {
+      this.setState({ boardWidth: this.state.minBoardWidth });
+    } else {
+      this.setState({ boardWidth: this.state.maxBoardWidth });
+    }
+  }
+
+  handleToggleCellStartValue(e) {
+    const r = e.target.rValue;
+    const c = e.target.cValue;
+    this.setState({
+      toggleCellStartValuePending: true
+    });
+    this.props.toggleCellStartValue(r, c);
   }
 
   render() {
     const board = this.props.board;
     const generation = this.props.generation;
-    const handleStep = this.handleStep;
-    const handleResetBoard = this.handleResetBoard;
     const handlePlay = this.handlePlay;
+    const handleStep = this.handleStep;
     const handlePause = this.handlePause;
+    const handleResetBoard = this.handleResetBoard;
+    const handleWidthChange = this.handleWidthChange;
+    const handleToggleCellStartValue = this.handleToggleCellStartValue;
     const concludedMessage = this.props.isConcluded ? 'concluded' : '';
     return (
       <div className="LifeContainer">
@@ -81,10 +132,20 @@ class LifeContainer extends Component {
         </a>
         &nbsp;
         <span>{concludedMessage}</span>
+        &nbsp;
+        <form>
+          <input
+            type="number"
+            min={this.state.minBoardWidth}
+            max={this.state.maxBoardWidth}
+            onChange={handleWidthChange}
+            value={this.state.boardWidth}
+          />
+        </form>
         <div>
           <LifeBoard
             board={board}
-            toggleCellStartValue={toggleCellStartValue}
+            toggleCellStartValue={handleToggleCellStartValue}
           />
         </div>
       </div>
@@ -94,6 +155,8 @@ class LifeContainer extends Component {
 
 const mapStateToProps = state => ({
   board: state.life.board,
+  boardWidth: state.life.boardWidth,
+  boardHeight: state.life.boardHeight,
   generation: state.life.generation,
   isConcluded: state.life.isConcluded,
   isPlaying: state.life.isPlaying
@@ -103,16 +166,20 @@ const mapDispatchToProps = dispatch => ({
   play: () => dispatch(play()),
   pause: () => dispatch(pause()),
   step: () => dispatch(step()),
-  resetBoard: () => dispatch(resetBoard())
+  resetBoard: (w, h) => dispatch(resetBoard(w, h)),
+  toggleCellStartValue: (r, c) => dispatch(toggleCellStartValue(r, c))
 });
 
 LifeContainer.propTypes = {
-  generation: PropTypes.number.isRequired,
   play: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,
   step: PropTypes.func.isRequired,
   resetBoard: PropTypes.func.isRequired,
+  toggleCellStartValue: PropTypes.func.isRequired,
+  generation: PropTypes.number.isRequired,
   board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  boardWidth: PropTypes.number.isRequired,
+  boardHeight: PropTypes.number.isRequired,
   isConcluded: PropTypes.bool.isRequired,
   isPlaying: PropTypes.bool.isRequired
 };
