@@ -109,10 +109,15 @@ class LifeContainer extends Component {
         </a>
         &nbsp;
         <a onClick={handleStep} role="button" tabIndex="0">
+          <span
+            className="glyphicon glyphicon-step-forward"
+            aria-label="Play"
+          />
           step
         </a>
         &nbsp;
         <a onClick={handleResetBoard} role="button" tabIndex="0">
+          <span className="glyphicon glyphicon-refresh" aria-label="Play" />
           reset
         </a>
         &nbsp;
