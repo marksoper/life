@@ -1,5 +1,12 @@
 import { combineReducers } from 'redux';
-import { createNewBoard, step, cloneBoard, resizeBoard } from './life/life';
+import {
+  createNewBoard,
+  step,
+  cloneBoard,
+  resizeBoard,
+  setCells,
+  getMinimumAllowableDimensions
+} from './life/life';
 import { actionTypes } from './actions';
 import {
   initialLiveCells,
@@ -13,18 +20,21 @@ function stepNextState(state) {
   if (state.isConcluded) {
     return state;
   }
-  const nextBoard = step(state.board);
   const nextGeneration = state.generation + 1;
-  const nextState = nextBoard
-    ? {
-        board: nextBoard,
-        generation: nextGeneration
-      }
-    : {
-        generation: nextGeneration,
-        isConcluded: true,
-        isPlaying: false
-      };
+  const nextBoardResults = step(state.board);
+  if (!nextBoardResults) {
+    return {
+      generation: nextGeneration,
+      isConcluded: true,
+      isPlaying: false
+    };
+  }
+  const nextState = {
+    board: nextBoardResults.board,
+    minBoardWidth: nextBoardResults.minBoardWidth,
+    minBoardHeight: nextBoardResults.minBoardHeight,
+    generation: nextGeneration
+  };
   if (state.generation === 0) {
     nextState.initialBoard = cloneBoard(state.board);
   }
@@ -32,10 +42,14 @@ function stepNextState(state) {
 }
 
 function toggleCellStartValueNextState(state, r, c) {
-  const updatedBoard = state.board;
-  updatedBoard[r][c] = updatedBoard[r][c] ? 0 : 1;
+  const currVal = state.board[r][c];
+  const nextVal = currVal ? 0 : 1;
+  const nextBoard = setCells(state.board, [[r, c]], nextVal);
+  const minDims = getMinimumAllowableDimensions(nextBoard);
   return {
-    board: updatedBoard
+    board: nextBoard,
+    minBoardWidth: minDims[0],
+    minBoardHeight: minDims[1]
   };
 }
 

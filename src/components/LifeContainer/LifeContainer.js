@@ -24,28 +24,9 @@ class LifeContainer extends Component {
     this.handleToggleCellStartValue = this.handleToggleCellStartValue.bind(
       this
     );
-    const minDims = props.getMinimumAllowableDimensions(
-      this.props.board
-    );
     this.state = {
-      requestedBoardWidth: this.props.board[0].length,
-      minBoardWidth: minDims[0],
-      minBoardHeight: minDims[1],
-      toggleCellStartValuePending: false
+      requestedBoardWidth: this.props.board[0].length
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.state.toggleCellStartValuePending) {
-      const minDims = this.props.getMinimumAllowableDimensions(
-        this.props.board
-      );
-      this.setState({
-        minBoardWidth: minDims[0],
-        minBoardHeight: minDims[1],
-        toggleCellStartValuePending: false
-      });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -90,9 +71,6 @@ class LifeContainer extends Component {
   }
 
   handleWidthChange(e) {
-    if (this.hasStarted()) {
-      return;
-    }
     const requestedBoardWidth = Number(e.target.value);
     this.props.resizeBoard(
       Math.max(
@@ -104,19 +82,7 @@ class LifeContainer extends Component {
   }
 
   handleToggleCellStartValue(r, c) {
-    if (!this.hasStarted()) {
-      this.setState({
-        toggleCellStartValuePending: true
-      });
-      //
-      // Whenever cell start value is changed, we need
-      // to recalculate minimum dimensions (after props.board is updated)
-      // so that subsequent resizeBoard operations can be validated.
-      // This flag can be checked in componentWillReceiveProps to see if that
-      // min dims recalc is needed
-      //
-      this.props.toggleCellStartValue(r, c);
-    }
+    this.props.toggleCellStartValue(r, c);
   }
 
   render() {
@@ -176,6 +142,7 @@ class LifeContainer extends Component {
 const mapStateToProps = state => ({
   board: state.life.board,
   generation: state.life.generation,
+  minBoardWidth: state.life.minBoardWidth,
   isConcluded: state.life.isConcluded,
   isPlaying: state.life.isPlaying
 });

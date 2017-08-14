@@ -106,6 +106,8 @@ function getLiveNeighborCount(r, c, board) {
 export function step(board) {
   const nextBoard = [];
   let cellChangeCount = 0;
+  let rMax = 0;
+  let cMax = 0;
   for (let r = 0; r < board.length; r += 1) {
     nextBoard[r] = [];
     for (let c = 0; c < board[0].length; c += 1) {
@@ -121,7 +123,17 @@ export function step(board) {
         cellChangeCount += 1;
       }
       nextBoard[r][c] = nextVal;
+      if (nextVal) {
+        rMax = Math.max(rMax, r);
+        cMax = Math.max(cMax, c);
+      }
     }
   }
-  return cellChangeCount > 0 ? nextBoard : false;
+  return cellChangeCount > 0
+    ? {
+        board: nextBoard,
+        minBoardWidth: cMax + 1,
+        minBoardHeight: rMax + 1
+      }
+    : false;
 }
