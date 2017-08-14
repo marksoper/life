@@ -11,8 +11,7 @@ import {
   step,
   toggleCellStartValue
 } from '../../actions';
-import { tickDelay, maxBoardWidth, maxBoardHeight } from '../../settings';
-import { getMinimumAllowableDimensions } from '../../life/life';
+import { tickDelay, maxBoardWidth } from '../../settings';
 
 class LifeContainer extends Component {
   constructor(props) {
@@ -25,23 +24,25 @@ class LifeContainer extends Component {
     this.handleToggleCellStartValue = this.handleToggleCellStartValue.bind(
       this
     );
-    const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
+    const minDims = props.getMinimumAllowableDimensions(
+      this.props.board
+    );
     this.state = {
-      boardWidth: this.props.boardWidth,
-      boardHeight: this.props.boardHeight,
-      minBoardWidth: minimumDimensions[0],
-      maxBoardWidth,
-      minBoardHeight: minimumDimensions[1],
-      maxBoardHeight
+      requestedBoardWidth: this.props.board[0].length,
+      minBoardWidth: minDims[0],
+      minBoardHeight: minDims[1],
+      toggleCellStartValuePending: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.state.toggleCellStartValuePending) {
-      const minimumDimensions = getMinimumAllowableDimensions(this.props.board);
+      const minDims = this.props.getMinimumAllowableDimensions(
+        this.props.board
+      );
       this.setState({
-        minBoardWidth: minimumDimensions[0],
-        minBoardHeight: minimumDimensions[1],
+        minBoardWidth: minDims[0],
+        minBoardHeight: minDims[1],
         toggleCellStartValuePending: false
       });
     }
@@ -92,18 +93,14 @@ class LifeContainer extends Component {
     if (this.hasStarted()) {
       return;
     }
-    const nextBoardWidth = Number(e.target.value);
-    if (
-      nextBoardWidth >= this.state.minBoardWidth &&
-      nextBoardWidth <= this.state.maxBoardWidth
-    ) {
-      this.setState({ boardWidth: nextBoardWidth });
-      this.props.resizeBoard(nextBoardWidth, this.props.boardHeight);
-    } else if (nextBoardWidth < this.state.minBoardWidth) {
-      this.setState({ boardWidth: this.state.minBoardWidth });
-    } else {
-      this.setState({ boardWidth: this.state.maxBoardWidth });
-    }
+    const requestedBoardWidth = Number(e.target.value);
+    this.props.resizeBoard(
+      Math.max(
+        Math.min(requestedBoardWidth, maxBoardWidth),
+        this.props.minBoardWidth
+      ),
+      this.props.board.length
+    );
   }
 
   handleToggleCellStartValue(r, c) {
@@ -111,6 +108,13 @@ class LifeContainer extends Component {
       this.setState({
         toggleCellStartValuePending: true
       });
+      //
+      // Whenever cell start value is changed, we need
+      // to recalculate minimum dimensions (after props.board is updated)
+      // so that subsequent resizeBoard operations can be validated.
+      // This flag can be checked in componentWillReceiveProps to see if that
+      // min dims recalc is needed
+      //
       this.props.toggleCellStartValue(r, c);
     }
   }
@@ -152,10 +156,10 @@ class LifeContainer extends Component {
         <form>
           <input
             type="number"
-            min={this.state.minBoardWidth}
-            max={this.state.maxBoardWidth}
+            min={this.props.minBoardWidth}
+            max={maxBoardWidth}
             onChange={handleWidthChange}
-            value={this.state.boardWidth}
+            value={this.state.requestedBoardWidth}
           />
         </form>
         <div>
@@ -171,8 +175,6 @@ class LifeContainer extends Component {
 
 const mapStateToProps = state => ({
   board: state.life.board,
-  boardWidth: state.life.boardWidth,
-  boardHeight: state.life.boardHeight,
   generation: state.life.generation,
   isConcluded: state.life.isConcluded,
   isPlaying: state.life.isPlaying
@@ -192,11 +194,11 @@ LifeContainer.propTypes = {
   pause: PropTypes.func.isRequired,
   step: PropTypes.func.isRequired,
   resetBoard: PropTypes.func.isRequired,
+  resizeBoard: PropTypes.func.isRequired,
   toggleCellStartValue: PropTypes.func.isRequired,
   generation: PropTypes.number.isRequired,
   board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
-  boardWidth: PropTypes.number.isRequired,
-  boardHeight: PropTypes.number.isRequired,
+  minBoardWidth: PropTypes.number.isRequired,
   isConcluded: PropTypes.bool.isRequired,
   isPlaying: PropTypes.bool.isRequired
 };

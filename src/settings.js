@@ -4,6 +4,8 @@ export const initialLiveCells = foo;
 
 export const initialBoardWidth = 40;
 export const initialBoardHeight = 30;
+export const minBoardWidth = 10;
+export const minBoardHeight = 10;
 export const maxBoardWidth = 120;
 export const maxBoardHeight = 80;
 

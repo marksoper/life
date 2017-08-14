@@ -1,7 +1,13 @@
 import { combineReducers } from 'redux';
 import { createNewBoard, step, cloneBoard, resizeBoard } from './life/life';
 import { actionTypes } from './actions';
-import { initialLiveCells } from './settings';
+import {
+  initialLiveCells,
+  minBoardWidth,
+  minBoardHeight,
+  maxBoardWidth,
+  maxBoardHeight
+} from './settings';
 
 function stepNextState(state) {
   if (state.isConcluded) {
@@ -33,6 +39,19 @@ function toggleCellStartValueNextState(state, r, c) {
   };
 }
 
+function resizeBoardNextState(state, w, h) {
+  if (
+    w >= minBoardWidth &&
+    w <= maxBoardWidth &&
+    h >= minBoardHeight &&
+    h <= maxBoardHeight
+  ) {
+    const newBoard = resizeBoard(state.board, w, h);
+    return newBoard ? { board: newBoard } : {};
+  }
+  return {};
+}
+
 function life(state = {}, action) {
   switch (action.type) {
     case actionTypes.RESET_BOARD:
@@ -49,9 +68,11 @@ function life(state = {}, action) {
         isConcluded: false
       });
     case actionTypes.RESIZE_BOARD:
-      return Object.assign({}, state, {
-        board: resizeBoard(state.board, action.width, action.height)
-      });
+      return Object.assign(
+        {},
+        state,
+        resizeBoardNextState(state, action.width, action.height)
+      );
     case actionTypes.PLAY:
       return Object.assign({}, state, {
         isPlaying: true

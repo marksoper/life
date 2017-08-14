@@ -39,7 +39,11 @@ export function resizeBoard(board, w, h) {
       const cellVal = board[r][c];
       if (c >= w || r >= h) {
         if (cellVal) {
-          return board;
+          //
+          // if resize will eliminate a live value,
+          // then halt and return false
+          //
+          return false;
         }
       } else {
         newBoard[r] = newBoard[r] || [];
@@ -50,6 +54,10 @@ export function resizeBoard(board, w, h) {
   return newBoard;
 }
 
+//
+// how small can the board be made without
+// eliminating any live cells
+//
 export function getMinimumAllowableDimensions(board) {
   let rMax = 0;
   let cMax = 0;
