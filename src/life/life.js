@@ -79,18 +79,26 @@ export function getMinimumAllowableDimensions(board) {
   return [cMax + 1, rMax + 1];
 }
 
+function doesCellsContainCell(cells, r, c) {
+  return cells.filter(cell => cell[0] === r && cell[1] === c).length > 0;
+}
+
 export function setCells(board, cells, value) {
-  const updatedBoard = board;
+  const nextBoard = [];
   if (value !== 0 && value !== 1) {
     throw Error('value must be 0 or 1');
   }
-  cells.forEach(cell => {
-    if (cell[0] > board.length || cell[1] > board[0].length) {
-      throw Error(`cell index not valid: ${cell}`);
+  for (let r = 0; r < board.length; r += 1) {
+    nextBoard[r] = [];
+    for (let c = 0; c < board[0].length; c += 1) {
+      if (doesCellsContainCell(cells, r, c)) {
+        nextBoard[r][c] = value;
+      } else {
+        nextBoard[r][c] = board[r][c];
+      }
     }
-    updatedBoard[cell[0]][cell[1]] = value;
-  });
-  return updatedBoard;
+  }
+  return nextBoard;
 }
 
 function getLiveNeighborCount(r, c, board) {

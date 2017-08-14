@@ -32,7 +32,6 @@ class LifeContainer extends Component {
     if (!prevProps.isPlaying && this.props.isPlaying) {
       this.runSteps();
     }
-    console.log(this.props.minBoardWidth);
   }
 
   hasStarted() {
