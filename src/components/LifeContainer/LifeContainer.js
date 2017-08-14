@@ -11,7 +11,6 @@ import {
   step,
   toggleCellStartValue
 } from '../../actions';
-import { tickDelay, maxBoardWidth } from '../../settings';
 
 class LifeContainer extends Component {
   constructor(props) {
@@ -33,6 +32,7 @@ class LifeContainer extends Component {
     if (!prevProps.isPlaying && this.props.isPlaying) {
       this.runSteps();
     }
+    console.log(this.props.minBoardWidth);
   }
 
   hasStarted() {
@@ -42,7 +42,7 @@ class LifeContainer extends Component {
   runSteps() {
     if (this.props.isPlaying && !this.props.isConcluded) {
       this.props.step();
-      setTimeout(this.runSteps.bind(this), tickDelay);
+      setTimeout(this.runSteps.bind(this), this.props.tickDelay);
     }
   }
 
@@ -74,7 +74,7 @@ class LifeContainer extends Component {
     const requestedBoardWidth = Number(e.target.value);
     this.props.resizeBoard(
       Math.max(
-        Math.min(requestedBoardWidth, maxBoardWidth),
+        Math.min(requestedBoardWidth, this.props.maxBoardWidth),
         this.props.minBoardWidth
       ),
       this.props.board.length
@@ -123,9 +123,9 @@ class LifeContainer extends Component {
           <input
             type="number"
             min={this.props.minBoardWidth}
-            max={maxBoardWidth}
+            max={this.props.maxBoardWidth}
             onChange={handleWidthChange}
-            value={this.state.requestedBoardWidth}
+            value={this.props.board[0].length}
           />
         </form>
         <div>
@@ -143,6 +143,10 @@ const mapStateToProps = state => ({
   board: state.life.board,
   generation: state.life.generation,
   minBoardWidth: state.life.minBoardWidth,
+  maxBoardWidth: state.life.maxBoardWidth,
+  minBoardHeight: state.life.minBoardHeight,
+  maxBoardHeight: state.life.maxBoardHeight,
+  tickDelay: state.life.tickDelay,
   isConcluded: state.life.isConcluded,
   isPlaying: state.life.isPlaying
 });
@@ -166,6 +170,10 @@ LifeContainer.propTypes = {
   generation: PropTypes.number.isRequired,
   board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
   minBoardWidth: PropTypes.number.isRequired,
+  maxBoardWidth: PropTypes.number.isRequired,
+  minBoardHeight: PropTypes.number.isRequired,
+  maxBoardHeight: PropTypes.number.isRequired,
+  tickDelay: PropTypes.number.isRequired,
   isConcluded: PropTypes.bool.isRequired,
   isPlaying: PropTypes.bool.isRequired
 };

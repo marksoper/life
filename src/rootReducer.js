@@ -8,13 +8,7 @@ import {
   getMinimumAllowableDimensions
 } from './life/life';
 import { actionTypes } from './actions';
-import {
-  initialLiveCells,
-  minBoardWidth,
-  minBoardHeight,
-  maxBoardWidth,
-  maxBoardHeight
-} from './settings';
+import config from './config';
 
 function stepNextState(state) {
   if (state.isConcluded) {
@@ -55,10 +49,10 @@ function toggleCellStartValueNextState(state, r, c) {
 
 function resizeBoardNextState(state, w, h) {
   if (
-    w >= minBoardWidth &&
-    w <= maxBoardWidth &&
-    h >= minBoardHeight &&
-    h <= maxBoardHeight
+    w >= config.INITIAL_MIN_BOARD_WIDTH &&
+    w <= config.INITIAL_MAX_BOARD_WIDTH &&
+    h >= config.INITIAL_MIN_BOARD_HEIGHT &&
+    h <= config.INITIAL_MAX_BOARD_HEIGHT
   ) {
     const newBoard = resizeBoard(state.board, w, h);
     return newBoard ? { board: newBoard } : {};
@@ -75,7 +69,7 @@ function life(state = {}, action) {
           createNewBoard(
             state.board[0].length,
             state.board.length,
-            initialLiveCells
+            config.INITIAL_LIVE_CELLS
           ),
         generation: 0,
         isPlaying: false,

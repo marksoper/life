@@ -22,21 +22,28 @@ export function createNewBoard(w, h, liveCells) {
 }
 
 export function cloneBoard(board) {
-  const newBoard = [];
+  const nextBoard = [];
   for (let r = 0; r < board.length; r += 1) {
-    newBoard[r] = [];
+    nextBoard[r] = [];
     for (let c = 0; c < board[0].length; c += 1) {
-      newBoard[r][c] = board[r][c];
+      nextBoard[r][c] = board[r][c];
     }
   }
-  return newBoard;
+  return nextBoard;
 }
 
 export function resizeBoard(board, w, h) {
-  const newBoard = [];
-  for (let r = 0; r < board.length; r += 1) {
-    for (let c = 0; c < board[0].length; c += 1) {
-      const cellVal = board[r][c];
+  const nextBoard = [];
+  const wLimit = Math.max(board[0].length, w);
+  const hLimit = Math.max(board.length, h);
+  for (let r = 0; r < hLimit; r += 1) {
+    for (let c = 0; c < wLimit; c += 1) {
+      let cellVal;
+      if (r >= board.length || c >= board[0].length) {
+        cellVal = 0;
+      } else {
+        cellVal = board[r][c];
+      }
       if (c >= w || r >= h) {
         if (cellVal) {
           //
@@ -46,12 +53,12 @@ export function resizeBoard(board, w, h) {
           return false;
         }
       } else {
-        newBoard[r] = newBoard[r] || [];
-        newBoard[r][c] = board[r][c];
+        nextBoard[r] = nextBoard[r] || [];
+        nextBoard[r][c] = board[r][c];
       }
     }
   }
-  return newBoard;
+  return nextBoard;
 }
 
 //

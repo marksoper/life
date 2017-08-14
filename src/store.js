@@ -1,29 +1,26 @@
 import { createStore } from 'redux';
 import rootReducer from './rootReducer';
 import { createNewBoard, getMinimumAllowableDimensions } from './life/life';
-import {
-  initialBoardWidth,
-  initialBoardHeight,
-  initialLiveCells,
-  minBoardWidth,
-  minBoardHeight
-} from './settings';
+import config from './config';
 
 const initialBoard = createNewBoard(
-  initialBoardWidth,
-  initialBoardHeight,
-  initialLiveCells
+  config.INITIAL_BOARD_WIDTH,
+  config.INITIAL_BOARD_HEIGHT,
+  config.INITIAL_LIVE_CELLS
 );
 
 const minDims = getMinimumAllowableDimensions(initialBoard);
-const mbw = Math.max(minDims[0], minBoardWidth);
-const mbh = Math.max(minDims[1], minBoardHeight);
+const minbw = Math.max(minDims[0], config.INITIAL_MIN_BOARD_WIDTH);
+const minbh = Math.max(minDims[1], config.INITIAL_MIN_BOARD_HEIGHT);
 
 const initialState = {
   life: {
     board: initialBoard,
-    minBoardWidth: mbw,
-    minBoardHeight: mbh,
+    minBoardWidth: minbw,
+    minBoardHeight: minbh,
+    maxBoardWidth: config.INITIAL_MAX_BOARD_WIDTH,
+    maxBoardHeight: config.INITIAL_MAX_BOARD_HEIGHT,
+    tickDelay: config.INITIAL_TICK_DELAY,
     generation: 0,
     isPlaying: false,
     isConcluded: false
