@@ -110,6 +110,9 @@ class LifeContainer extends Component {
     return (
       <div className="LifeContainer">
         <div className="LifeHeader">
+          <div className="LifeTitle">
+            {"Conway's Game of Life"}
+          </div>
           <div className="GenCount" style={concludedStyle}>
             {generation}
           </div>

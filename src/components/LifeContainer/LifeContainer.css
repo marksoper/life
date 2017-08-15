@@ -1,4 +1,6 @@
 
+a:focus {outline: 0;}
+
 .LifeContainer {
   margin: 40px;
   display: flex;
@@ -21,11 +23,11 @@
 .SimControls {
   margin-top: 30px;
   margin-bottom: 60px;
-  font-size: 150%;
+  font-size: 180%;
 }
 
 .SimControls div {
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .ResizeControls input {
