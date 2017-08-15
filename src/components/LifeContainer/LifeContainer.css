@@ -1,3 +1,32 @@
+
 .LifeContainer {
-  
+  margin: 40px;
+}
+
+.LifeHeader {
+  display: flex;
+  align-items: flex-end;
+  width: 720px;
+  margin-bottom: 20px;
+}
+
+.GenCount {
+  font-size: 150%;
+  flex-grow: 1;
+  font-weight: bold;
+  color: #0a8;
+}
+
+.SimControls {
+  font-size: 150%;
+  flex-grow: 2;
+  display: flex;
+}
+
+.SimControls div {
+  margin-right: 10px;
+}
+
+.ResizeControls {
+  flex-grow: 1;
 }

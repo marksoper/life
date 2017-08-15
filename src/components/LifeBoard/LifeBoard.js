@@ -31,7 +31,7 @@ class LifeBoard extends Component {
           y: r * (pixelsPerCell + rowLineStrokeWidth),
           r,
           c,
-          fill: board[r][c] ? '#0FC' : '#EEE',
+          fill: board[r][c] ? '#0A8' : '#EEE',
           key: `${r}_${c}`
         });
       }

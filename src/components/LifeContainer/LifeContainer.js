@@ -96,42 +96,54 @@ class LifeContainer extends Component {
     const concludedMessage = this.props.isConcluded ? 'concluded' : '';
     return (
       <div className="LifeContainer">
-        <span>{generation}</span>
-        &nbsp;
-        <a onClick={handlePlay} role="button" tabIndex="0">
-          <span className="glyphicon glyphicon-play" aria-label="Play" />
-          play
-        </a>
-        &nbsp;
-        <a onClick={handlePause} role="button" tabIndex="0">
-          <span className="glyphicon glyphicon-pause" aria-label="Play" />
-          pause
-        </a>
-        &nbsp;
-        <a onClick={handleStep} role="button" tabIndex="0">
-          <span
-            className="glyphicon glyphicon-step-forward"
-            aria-label="Play"
-          />
-          step
-        </a>
-        &nbsp;
-        <a onClick={handleResetBoard} role="button" tabIndex="0">
-          <span className="glyphicon glyphicon-refresh" aria-label="Play" />
-          reset
-        </a>
-        &nbsp;
-        <span>{concludedMessage}</span>
-        &nbsp;
-        <form>
-          <input
-            type="number"
-            min={this.props.minBoardWidth}
-            max={this.props.maxBoardWidth}
-            onChange={handleWidthChange}
-            value={this.props.board[0].length}
-          />
-        </form>
+        <div className="LifeHeader">
+          <div className="GenCount">
+            {generation}
+            <span>
+              {concludedMessage}
+            </span>
+          </div>
+          <div className="SimControls">
+            <div>
+              <a onClick={handlePlay} role="button" tabIndex="0">
+                <span className="glyphicon glyphicon-play" aria-label="Play" />
+                play
+              </a>
+            </div>
+            <div>
+              <a onClick={handlePause} role="button" tabIndex="0">
+                <span className="glyphicon glyphicon-pause" aria-label="Play" />
+                pause
+              </a>
+            </div>
+            <div>
+              <a onClick={handleStep} role="button" tabIndex="0">
+                <span
+                  className="glyphicon glyphicon-step-forward"
+                  aria-label="Play"
+                />
+                step
+              </a>
+            </div>
+            <div>
+              <a onClick={handleResetBoard} role="button" tabIndex="0">
+                <span className="glyphicon glyphicon-refresh" aria-label="Play" />
+                reset
+              </a>
+            </div>
+          </div>
+          <div className="ResizeControls">
+            <form>
+              <input
+                type="number"
+                min={this.props.minBoardWidth}
+                max={this.props.maxBoardWidth}
+                onChange={handleWidthChange}
+                value={this.props.board[0].length}
+              />
+            </form>
+          </div>
+        </div>
         <div>
           <LifeBoard
             board={board}
