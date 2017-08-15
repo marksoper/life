@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LifeBoard from '../LifeBoard/LifeBoard';
 import './LifeContainer.css';
+import config from '../../config';
 import {
   resetBoard,
   resizeBoard,
@@ -40,7 +41,11 @@ class LifeContainer extends Component {
   }
 
   runSteps() {
-    if (this.props.isPlaying && !this.props.isConcluded) {
+    if (
+      this.props.isPlaying &&
+      !this.props.isConcluded &&
+      this.props.generation <= config.MAX_GENERATIONS
+    ) {
       this.props.step();
       setTimeout(this.runSteps.bind(this), this.props.tickDelay);
     }
@@ -111,7 +116,10 @@ class LifeContainer extends Component {
       <div className="LifeContainer">
         <div className="LifeHeader">
           <div className="LifeTitle">
-            {"Conway's Game of Life"}
+            <div className="TitleMain">
+              {"Conway's"}
+            </div>
+            <div className="TitleSub">Game of Life</div>
           </div>
           <div className="GenCount" style={concludedStyle}>
             {generation}
@@ -175,10 +183,13 @@ class LifeContainer extends Component {
             <form>
               <div>
                 <label htmlFor="widthInput">Width</label>
+                <span>
+                  : {this.props.board[0].length}
+                </span>
                 <div>
                   <input
                     id="widthInput"
-                    type="number"
+                    type="range"
                     min={this.props.minBoardWidth}
                     max={this.props.maxBoardWidth}
                     onChange={handleWidthChange}
@@ -188,10 +199,13 @@ class LifeContainer extends Component {
               </div>
               <div>
                 <label htmlFor="heightInput">Height</label>
+                <span>
+                  : {this.props.board.length}
+                </span>
                 <div>
                   <input
                     id="heightInput"
-                    type="number"
+                    type="range"
                     min={this.props.minBoardHeight}
                     max={this.props.maxBoardHeight}
                     onChange={handleHeightChange}

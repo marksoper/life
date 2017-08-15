@@ -2,19 +2,31 @@
 a:focus {outline: 0;}
 
 .LifeContainer {
+  color: #555;
   margin: 40px;
   display: flex;
   justify-content: flex-start;
 }
 
 .LifeHeader {
+  margin-top: 25px;
   align-items: flex-end;
-  min-width: 140px;
+  min-width: 180px;
   margin-bottom: 20px;
 }
 
+.TitleMain {
+  font-weight: bold;
+  font-size: 180%;
+}
+
+.TitleSub {
+  font-size: 140%;
+}
+
 .GenCount {
-  font-size: 500%;
+  margin-top: 20px;
+  font-size: 400%;
   flex-grow: 1;
   font-weight: bold;
   color: #0a8;
@@ -32,6 +44,8 @@ a:focus {outline: 0;}
 
 .ResizeControls input {
   font-size: 150%;
+  padding: 5px;
+  width: 140px;
 }
 
 .ResizeControls label {
