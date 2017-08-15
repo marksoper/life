@@ -4,7 +4,8 @@ import {
   step,
   cloneBoard,
   resizeBoard,
-  setCells
+  setCells,
+  getMinimumAllowableDimensions
 } from './life/life';
 import { actionTypes } from './actions';
 import config from './config';
@@ -41,11 +42,12 @@ function toggleCellStartValueNextState(state, r, c) {
   const nextState = {
     board: nextBoard
   };
-  if (c >= state.minBoardWidth) {
-    nextState.minBoardWidth = c + 1;
+  const nextMinDims = getMinimumAllowableDimensions(nextBoard);
+  if (nextMinDims[0] !== state.minBoardWidth) {
+    nextState.minBoardWidth = nextMinDims[0];
   }
-  if (r >= state.minBoardHeight) {
-    nextState.minBoardHeight = r + 1;
+  if (nextMinDims[1] !== state.minBoardHeight) {
+    nextState.minBoardHeight = nextMinDims[1];
   }
   return nextState;
 }

@@ -12,15 +12,15 @@
 }
 
 .GenCount {
-  font-size: 350%;
+  font-size: 500%;
   flex-grow: 1;
   font-weight: bold;
   color: #0a8;
 }
 
 .SimControls {
-  margin-top: 20px;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 60px;
   font-size: 150%;
 }
 
