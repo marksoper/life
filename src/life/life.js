@@ -39,22 +39,24 @@ export function resizeBoard(board, w, h) {
   for (let r = 0; r < hLimit; r += 1) {
     for (let c = 0; c < wLimit; c += 1) {
       let cellVal;
-      if (r >= board.length || c >= board[0].length) {
-        cellVal = 0;
-      } else {
+      if (r < board.length && r < h && c < board[0].length && c < w) {
         cellVal = board[r][c];
-      }
-      if (c >= w || r >= h) {
-        if (cellVal) {
-          //
-          // if resize will eliminate a live value,
-          // then halt and return false
-          //
+      } else if (
+        (r >= h && r < board.length) ||
+        (c >= w && c < board[0].length)
+      ) {
+        if (board[r][c]) {
           return false;
         }
-      } else {
+      } else if (
+        (r >= board.length && r < h) ||
+        (c >= board[0].length && c < w)
+      ) {
+        cellVal = 0;
+      }
+      if (cellVal === 0 || cellVal === 1) {
         nextBoard[r] = nextBoard[r] || [];
-        nextBoard[r][c] = board[r][c];
+        nextBoard[r][c] = cellVal;
       }
     }
   }

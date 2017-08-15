@@ -20,6 +20,7 @@ class LifeContainer extends Component {
     this.handlePlay = this.handlePlay.bind(this);
     this.handlePause = this.handlePause.bind(this);
     this.handleWidthChange = this.handleWidthChange.bind(this);
+    this.handleHeightChange = this.handleHeightChange.bind(this);
     this.handleToggleCellStartValue = this.handleToggleCellStartValue.bind(
       this
     );
@@ -80,6 +81,17 @@ class LifeContainer extends Component {
     );
   }
 
+  handleHeightChange(e) {
+    const requestedBoardHeight = Number(e.target.value);
+    this.props.resizeBoard(
+      this.props.board[0].length,
+      Math.max(
+        Math.min(requestedBoardHeight, this.props.maxBoardHeight),
+        this.props.minBoardHeight
+      )
+    );
+  }
+
   handleToggleCellStartValue(r, c) {
     this.props.toggleCellStartValue(r, c);
   }
@@ -92,45 +104,72 @@ class LifeContainer extends Component {
     const handlePause = this.handlePause;
     const handleResetBoard = this.handleResetBoard;
     const handleWidthChange = this.handleWidthChange;
+    const handleHeightChange = this.handleHeightChange;
     const handleToggleCellStartValue = this.handleToggleCellStartValue;
     const concludedMessage = this.props.isConcluded ? 'concluded' : '';
     return (
       <div className="LifeContainer">
         <div className="LifeHeader">
+          <div className="SimControls">
+            <div>
+              <a
+                onClick={handlePlay}
+                role="button"
+                tabIndex="0"
+                title="Run the simulation"
+              >
+                <span className="glyphicon glyphicon-play" aria-label="Play" />
+                Play
+              </a>
+            </div>
+            <div>
+              <a
+                onClick={handlePause}
+                role="button"
+                tabIndex="0"
+                title="Pause the simultation"
+              >
+                <span
+                  className="glyphicon glyphicon-pause"
+                  aria-label="Pause"
+                />
+                Pause
+              </a>
+            </div>
+            <div>
+              <a
+                onClick={handleStep}
+                role="button"
+                tabIndex="0"
+                title="Advance by 1 step"
+              >
+                <span
+                  className="glyphicon glyphicon-step-forward"
+                  aria-label="Step"
+                />
+                Step
+              </a>
+            </div>
+            <div>
+              <a
+                onClick={handleResetBoard}
+                role="button"
+                tabIndex="0"
+                title="Reset to initial state"
+              >
+                <span
+                  className="glyphicon glyphicon-refresh"
+                  aria-label="Reset"
+                />
+                Reset
+              </a>
+            </div>
+          </div>
           <div className="GenCount">
             {generation}
             <span>
               {concludedMessage}
             </span>
-          </div>
-          <div className="SimControls">
-            <div>
-              <a onClick={handlePlay} role="button" tabIndex="0">
-                <span className="glyphicon glyphicon-play" aria-label="Play" />
-                play
-              </a>
-            </div>
-            <div>
-              <a onClick={handlePause} role="button" tabIndex="0">
-                <span className="glyphicon glyphicon-pause" aria-label="Play" />
-                pause
-              </a>
-            </div>
-            <div>
-              <a onClick={handleStep} role="button" tabIndex="0">
-                <span
-                  className="glyphicon glyphicon-step-forward"
-                  aria-label="Play"
-                />
-                step
-              </a>
-            </div>
-            <div>
-              <a onClick={handleResetBoard} role="button" tabIndex="0">
-                <span className="glyphicon glyphicon-refresh" aria-label="Play" />
-                reset
-              </a>
-            </div>
           </div>
           <div className="ResizeControls">
             <form>
@@ -140,6 +179,13 @@ class LifeContainer extends Component {
                 max={this.props.maxBoardWidth}
                 onChange={handleWidthChange}
                 value={this.props.board[0].length}
+              />
+              <input
+                type="number"
+                min={this.props.minBoardHeight}
+                max={this.props.maxBoardHeight}
+                onChange={handleHeightChange}
+                value={this.props.board.length}
               />
             </form>
           </div>
