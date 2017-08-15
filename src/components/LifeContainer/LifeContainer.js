@@ -106,10 +106,13 @@ class LifeContainer extends Component {
     const handleWidthChange = this.handleWidthChange;
     const handleHeightChange = this.handleHeightChange;
     const handleToggleCellStartValue = this.handleToggleCellStartValue;
-    const concludedMessage = this.props.isConcluded ? 'concluded' : '';
+    const concludedStyle = this.props.isConcluded ? { color: '#900' } : null;
     return (
       <div className="LifeContainer">
         <div className="LifeHeader">
+          <div className="GenCount" style={concludedStyle}>
+            {generation}
+          </div>
           <div className="SimControls">
             <div>
               <a
@@ -165,32 +168,38 @@ class LifeContainer extends Component {
               </a>
             </div>
           </div>
-          <div className="GenCount">
-            {generation}
-            <span>
-              {concludedMessage}
-            </span>
-          </div>
           <div className="ResizeControls">
             <form>
-              <input
-                type="number"
-                min={this.props.minBoardWidth}
-                max={this.props.maxBoardWidth}
-                onChange={handleWidthChange}
-                value={this.props.board[0].length}
-              />
-              <input
-                type="number"
-                min={this.props.minBoardHeight}
-                max={this.props.maxBoardHeight}
-                onChange={handleHeightChange}
-                value={this.props.board.length}
-              />
+              <div>
+                <label htmlFor="widthInput">Width</label>
+                <div>
+                  <input
+                    id="widthInput"
+                    type="number"
+                    min={this.props.minBoardWidth}
+                    max={this.props.maxBoardWidth}
+                    onChange={handleWidthChange}
+                    value={this.props.board[0].length}
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="heightInput">Height</label>
+                <div>
+                  <input
+                    id="heightInput"
+                    type="number"
+                    min={this.props.minBoardHeight}
+                    max={this.props.maxBoardHeight}
+                    onChange={handleHeightChange}
+                    value={this.props.board.length}
+                  />
+                </div>
+              </div>
             </form>
           </div>
         </div>
-        <div>
+        <div className="LifeBoardContainer">
           <LifeBoard
             board={board}
             toggleCellStartValue={handleToggleCellStartValue}

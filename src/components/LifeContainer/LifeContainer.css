@@ -1,36 +1,44 @@
 
-div {
-  border: 1px solid red;
-}
-
 .LifeContainer {
   margin: 40px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .LifeHeader {
-  display: flex;
   align-items: flex-end;
-  width: 720px;
+  min-width: 140px;
   margin-bottom: 20px;
 }
 
 .GenCount {
-  font-size: 150%;
+  font-size: 350%;
   flex-grow: 1;
   font-weight: bold;
   color: #0a8;
 }
 
 .SimControls {
+  margin-top: 20px;
+  margin-bottom: 40px;
   font-size: 150%;
-  flex-grow: 2;
-  display: flex;
 }
 
 .SimControls div {
-  margin-right: 20px;
+  margin-bottom: 5px;
 }
 
-.ResizeControls {
-  flex-grow: 2;
+.ResizeControls input {
+  font-size: 150%;
 }
+
+.ResizeControls label {
+  font-size: 100%;
+}
+
+.ResizeControls div {
+  margin-bottom: 10px;
+}
+
+
+
