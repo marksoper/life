@@ -190,8 +190,8 @@ class LifeContainer extends Component {
                   <input
                     id="widthInput"
                     type="range"
-                    min={this.props.minBoardWidth}
-                    max={this.props.maxBoardWidth}
+                    min={config.INITIAL_MIN_BOARD_WIDTH}
+                    max={config.INITIAL_MAX_BOARD_WIDTH}
                     onChange={handleWidthChange}
                     value={this.props.board[0].length}
                   />
@@ -206,8 +206,8 @@ class LifeContainer extends Component {
                   <input
                     id="heightInput"
                     type="range"
-                    min={this.props.minBoardHeight}
-                    max={this.props.maxBoardHeight}
+                    min={config.INITIAL_MIN_BOARD_HEIGHT}
+                    max={config.INITIAL_MAX_BOARD_HEIGHT}
                     onChange={handleHeightChange}
                     value={this.props.board.length}
                   />
