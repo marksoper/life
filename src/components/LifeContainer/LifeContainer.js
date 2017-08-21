@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import LifeBoard from '../LifeBoard/LifeBoard';
+import LifeSimControls from '../LifeSimControls/LifeSimControls';
 import './LifeContainer.css';
 import config from '../../config';
 import {
@@ -16,10 +17,6 @@ import {
 class LifeContainer extends Component {
   constructor(props) {
     super(props);
-    this.handleStep = this.handleStep.bind(this);
-    this.handleResetBoard = this.handleResetBoard.bind(this);
-    this.handlePlay = this.handlePlay.bind(this);
-    this.handlePause = this.handlePause.bind(this);
     this.handleWidthChange = this.handleWidthChange.bind(this);
     this.handleHeightChange = this.handleHeightChange.bind(this);
     this.handleToggleCellStartValue = this.handleToggleCellStartValue.bind(
@@ -51,30 +48,6 @@ class LifeContainer extends Component {
     }
   }
 
-  handlePlay(e) {
-    e.preventDefault();
-    if (!this.props.isConcluded) {
-      this.props.play();
-    }
-  }
-
-  handlePause(e) {
-    e.preventDefault();
-    this.props.pause();
-  }
-
-  handleStep(e) {
-    e.preventDefault();
-    if (!this.props.isPlaying) {
-      this.props.step();
-    }
-  }
-
-  handleResetBoard(e) {
-    e.preventDefault();
-    this.props.resetBoard();
-  }
-
   handleWidthChange(e) {
     const requestedBoardWidth = Number(e.target.value);
     this.props.resizeBoard(
@@ -104,10 +77,6 @@ class LifeContainer extends Component {
   render() {
     const board = this.props.board;
     const generation = this.props.generation;
-    const handlePlay = this.handlePlay;
-    const handleStep = this.handleStep;
-    const handlePause = this.handlePause;
-    const handleResetBoard = this.handleResetBoard;
     const handleWidthChange = this.handleWidthChange;
     const handleHeightChange = this.handleHeightChange;
     const handleToggleCellStartValue = this.handleToggleCellStartValue;
@@ -124,61 +93,15 @@ class LifeContainer extends Component {
           <div className="GenCount" style={concludedStyle}>
             {generation}
           </div>
-          <div className="SimControls">
-            <div>
-              <a
-                onClick={handlePlay}
-                role="button"
-                tabIndex="0"
-                title="Run the simulation"
-              >
-                <span className="glyphicon glyphicon-play" aria-label="Play" />
-                Play
-              </a>
-            </div>
-            <div>
-              <a
-                onClick={handlePause}
-                role="button"
-                tabIndex="0"
-                title="Pause the simultation"
-              >
-                <span
-                  className="glyphicon glyphicon-pause"
-                  aria-label="Pause"
-                />
-                Pause
-              </a>
-            </div>
-            <div>
-              <a
-                onClick={handleStep}
-                role="button"
-                tabIndex="0"
-                title="Advance by 1 step"
-              >
-                <span
-                  className="glyphicon glyphicon-step-forward"
-                  aria-label="Step"
-                />
-                Step
-              </a>
-            </div>
-            <div>
-              <a
-                onClick={handleResetBoard}
-                role="button"
-                tabIndex="0"
-                title="Reset to initial state"
-              >
-                <span
-                  className="glyphicon glyphicon-refresh"
-                  aria-label="Reset"
-                />
-                Reset
-              </a>
-            </div>
-          </div>
+          <LifeSimControls
+            isConcluded={this.props.isConcluded}
+            isPlaying={this.props.isPlaying}
+            step={this.props.step}
+            resetBoard={this.props.resetBoard}
+            play={this.props.play}
+            pause={this.props.pause}
+          />
+
           <div className="ResizeControls">
             <form>
               <div>
